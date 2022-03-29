@@ -1,11 +1,12 @@
-import { GuildMemberManager, MessageEmbed, User } from "discord.js";
+import { GuildMember, GuildMemberManager, MessageEmbed, User } from "discord.js";
 import { Discord, SimpleCommand, SimpleCommandMessage, SimpleCommandOption, SimpleCommandOptionType } from "discordx";
 @Discord()
 class Ban {
     @SimpleCommand('ban')
-    async execute(@SimpleCommandOption("user", { type: SimpleCommandOptionType.User }) user:User, command: SimpleCommandMessage) {
+    async execute(@SimpleCommandOption("user", { type: SimpleCommandOptionType.User }) user:GuildMember, command: SimpleCommandMessage) {
         if (command.message.member.permissions.has("ADMINISTRATOR")) {
-        if(user instanceof User){
+            console.log(user.constructor.name);
+            if (user.constructor.name !="DiscordAPIError"){
             var member=command.message.mentions.members.first();
             console.log(member);
             if (member.bannable) {

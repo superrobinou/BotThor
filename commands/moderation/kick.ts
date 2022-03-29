@@ -5,7 +5,7 @@ class Kick {
     @SimpleCommand('kick')
     async execute(@SimpleCommandOption("user", { type: SimpleCommandOptionType.User }) user: User, command: SimpleCommandMessage) {
         if (command.message.member.permissions.has("ADMINISTRATOR")) {
-            if (user instanceof User) {
+            if (user.constructor.name != "DiscordAPIError") {
                 var member = command.message.mentions.members.first();
                 console.log(member);
                 if (member.kickable) {

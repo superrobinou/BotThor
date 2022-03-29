@@ -5,13 +5,13 @@ class Kick {
     @SimpleCommand('unmute')
     async execute(@SimpleCommandOption("user", { type: SimpleCommandOptionType.User }) user: User, command: SimpleCommandMessage) {
         if (command.message.member.permissions.has("ADMINISTRATOR")) {
-            if (user instanceof User) {
+            if (user.constructor.name != "DiscordAPIError") {
                 var member = command.message.mentions.members.first();
                 console.log(member);
                 if (member.kickable) {
                     member.roles.remove("958056372887502928");
                     const embed = new MessageEmbed()
-                        .setTitle("Kick")
+                        .setTitle("mute")
                         .setColor("GREEN")
                         .setTimestamp()
                         .setDescription(member.displayName + " a été unmute avec succès.")

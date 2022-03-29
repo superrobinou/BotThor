@@ -12,7 +12,7 @@ class Stats {
             .setTimestamp()
             .setDescription("Nous actualisons toutes les données :📡")
         command.message.reply({ embeds: [embed] });
-        setTimeout(this.fonctionAExecuter.bind(command), 15000); //On attend 15 secondes avant d'exécuter la fonction
+        setTimeout(this.fonctionAExecuter, 15000,command); //On attend 15 secondes avant d'exécuter la fonction
     }
     fonctionAExecuter(command:SimpleCommandMessage) {
         const embed = new MessageEmbed()
@@ -32,7 +32,7 @@ class Stats {
             .setTimestamp()
             .setDescription("Nous actualisons toutes les données :📡")
         command.message.reply({ embeds: [embed] });
-        setTimeout(this.fonctionAExecuter1.bind(command), 15000); //On attend 15 secondes avant d'exécuter la fonction
+        setTimeout(this.fonctionAExecuter1, 15000,command); //On attend 15 secondes avant d'exécuter la fonction
     }
 fonctionAExecuter1(command:SimpleCommandMessage) {
     const embed = new MessageEmbed()

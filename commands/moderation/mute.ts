@@ -4,8 +4,9 @@ import { Discord, SimpleCommand, SimpleCommandMessage, SimpleCommandOption, Simp
 class Mute {
     @SimpleCommand('mute')
     async execute(@SimpleCommandOption("user", { type: SimpleCommandOptionType.User }) user: User, command: SimpleCommandMessage) {
+        console.log(command.message.member.displayName);
         if (command.message.member.permissions.has("ADMINISTRATOR")) {
-            if (user instanceof User) {
+            if (user.constructor.name != "DiscordAPIError") {
                 var member = command.message.mentions.members.first();
                 console.log(member);
                 if (member.kickable) {

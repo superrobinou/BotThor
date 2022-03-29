@@ -43,7 +43,7 @@ client.on("ready", async () => {
 client.on('voiceStateUpdate',async(oldMember,newMember)=>{
     let oldMemberchannel=oldMember.channel;
     let newMemberchannel=newMember.channel;
-    if (newMemberchannel != null && newMemberchannel.id =="958260904825356291"){
+    if (newMemberchannel != null && newMemberchannel.id == process.env.VOCCHANNEL){
         let newCategoryChannel=newMemberchannel.parent;
         if(newCategoryChannel){
             const newVoiceChannel=await newMemberchannel.guild.channels.create('salon de '+newMember.member.user.username,{type:'GUILD_VOICE',parent:newCategoryChannel.id});

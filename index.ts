@@ -1,14 +1,18 @@
 import "reflect-metadata";
 import path, { dirname } from "path";
 import { Client } from 'discordx';
-import { Intents, Message } from 'discord.js';
+import { Channel, Intents, Message } from 'discord.js';
 import dotenv from 'dotenv';
 import { fileURLToPath } from "url";
 import { importx } from "@discordx/importer";
-
-export const client = new Client({
+var channelsVoice:Map<String,String>=new Map<String,String>();
+var state = 0;
+var presences = [
+    { type: 'PLAYING', message: 'Minecraft' }
+];
+var client = new Client({
     simpleCommand: {
-        prefix: "s!",
+        prefix: "+",
     },
     intents: [
         Intents.FLAGS.GUILDS,
@@ -23,12 +27,44 @@ export const client = new Client({
     botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
     silent: false
 });
-client.once("ready", async () => {
+
+client.on("ready", async () => {
     // to create/update/delete discord application commands
-    await client.guilds.fetch();
     await client.initApplicationCommands({ global: { log: true }, guild: { log: true } });
     await client.initApplicationPermissions(true);
-    console.log("Bot started");
+    console.log("Le Bot est connecté");
+    setInterval(() => {
+        state = (state + 1) % presences.length;
+        const presence = presences[state];
+
+        client.user.setActivity(presence.message, { type: presence.type });
+    }, 30000);
+});
+client.on('voiceStateUpdate',async(oldMember,newMember)=>{
+    let oldMemberchannel=oldMember.channel;
+    let newMemberchannel=newMember.channel;
+    if (newMemberchannel != null && newMemberchannel.id =="958260904825356291"){
+        let newCategoryChannel=newMemberchannel.parent;
+        if(newCategoryChannel){
+            const newVoiceChannel=await newMemberchannel.guild.channels.create('salon de '+newMember.member.user.username,{type:'GUILD_VOICE',parent:newCategoryChannel.id});
+            console.log(newVoiceChannel);
+            newMember.member.voice.setChannel(newVoiceChannel);
+            channelsVoice.set(newVoiceChannel.id,newMember.member.id);
+        }
+    }
+    else if (newMemberchannel === null) {
+        console.log(channelsVoice);
+        console.log(oldMemberchannel.id);
+        if(channelsVoice.has(oldMemberchannel.id)){
+            var channelmemberid=oldMember.member.id;
+            var ownerid=channelsVoice.get(oldMemberchannel.id);
+            if(oldMemberchannel.members.size==0){
+                oldMemberchannel.delete();
+            }
+        }
+        // User leaves a voice channel
+
+    }
 });
 client.on('interactionCreate', async interaction => {
     client.executeInteraction(interaction);
@@ -44,7 +80,7 @@ async function start() {
     console.log('chargement de configuration: ' + folder);
     var BOT_TOKEN = process.env.BOT_TOKEN;
     console.log(BOT_TOKEN);
-    await importx(__dirname + "/commands/*.{ts,js}");
+    await importx(__dirname + "/commands/**/*.{ts,js}");
     client.login(BOT_TOKEN);
 }
 

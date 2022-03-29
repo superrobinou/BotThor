@@ -2,10 +2,10 @@ import { Discord, SimpleCommand, SimpleCommandMessage } from "discordx";
 
 @Discord()
 
-class Test{
-    @SimpleCommand('test')
+class Ping{
+    @SimpleCommand('ping')
     async execute(command:SimpleCommandMessage) {
-        console.log(command);
+        command.message.reply('pong!');
     }
 }
-export default Test;
+export default Ping;

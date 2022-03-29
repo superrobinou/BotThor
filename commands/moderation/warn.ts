@@ -1,5 +1,5 @@
 import { Discord, SimpleCommand, SimpleCommandMessage } from "discordx";
-
+/** 
 @Discord()
 
 class Warn {
@@ -9,3 +9,4 @@ class Warn {
     }
 }
 export default Warn;
+*/

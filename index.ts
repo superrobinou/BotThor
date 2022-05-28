@@ -1,14 +1,15 @@
 import "reflect-metadata";
 import path, { dirname } from "path";
 import { Client } from 'discordx';
-import { Channel, Intents, Message } from 'discord.js';
+import { Activity, Channel, Intents, Message } from 'discord.js';
 import dotenv from 'dotenv';
 import { fileURLToPath } from "url";
 import { importx } from "@discordx/importer";
+import { ActivityTypes } from "discord.js/typings/enums";
 var channelsVoice:Map<String,String>=new Map<String,String>();
 var state = 0;
 var presences = [
-    { type: 'PLAYING', message: 'Minecraft' }
+    { type: ActivityTypes.LISTENING, message: 'THORCRAFT' }
 ];
 var client = new Client({
     simpleCommand: {
@@ -37,7 +38,7 @@ client.on("ready", async () => {
         state = (state + 1) % presences.length;
         const presence = presences[state];
 
-        client.user.setActivity(presence.message, { type: presence.type });
+        client.user.setActivity(presence.message, { type: ActivityTypes.PLAYING });
     }, 30000);
 });
 client.on('voiceStateUpdate',async(oldMember,newMember)=>{
